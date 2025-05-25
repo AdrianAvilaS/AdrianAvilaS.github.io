@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Alquiler de Maquinaria</title>
+  <!-- Fuente personalizada desde Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Iconos de Font Awesome para el menú hamburguesa -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden; /* Previene scroll horizontal cuando el menú está abierto */
+    }
+
+    .encabezado {
+      background-color: #2b2b2b;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      animation: fadeInDown 1s ease-in-out;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .encabezado-contenido {
+      flex-grow: 1;
+    }
+
+    .menu-icon {
+      display: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 15px;
+      z-index: 1001;
+    }
+
+    .menu {
+      background-color: #444;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .menu a {
+      color: white;
+      text-decoration: none;
+      margin: 10px 15px;
+      padding: 8px 16px;
+      display: inline-block;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .menu a:hover {
+      background-color: #666;
+      transform: scale(1.1);
+    }
+
+    /* Overlay para el fondo oscuro cuando el menú está abierto */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    .introduccion {
+      background-color: #f8f8f8;
+      padding: 30px;
+      text-align: center;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .introduccion h2 {
+      color: #444;
+      margin-bottom: 15px;
+    }
+
+    .introduccion p {
+      color: #666;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      animation: slideIn 1s ease forwards;
+    }
+
+    .card {
+      background-color: #f4f4f4;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 2px 2px 5px gray;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: rotateY(10deg);
+      box-shadow: 4px 4px 10px gray;
+    }
+
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .close-btn {
+      display: none; /* Oculto por defecto, se muestra solo en móvil */
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    /* DISEÑO RESPONSIVO */
+    @media screen and (max-width: 768px) {
+      .galeria {
+        grid-template-columns: 1fr;
+      }
+      
+      .menu-icon {
+        display: block;
+      }
+      
+      .menu {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 80%;
+        max-width: 300px;
+        height: 100%;
+        background-color: white;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+        padding: 15px 0 0 0; /* Reducido el espacio superior */
+        animation: slideInRight 0.3s forwards;
+        overflow-y: auto;
+      }
+      
+      .menu.active {
+        display: flex;
+      }
+
+      .menu a {
+        margin: 0;
+        width: 100%;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        color: #333;
+        font-weight: 500;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .menu a:after {
+        content: '›';
+        font-size: 20px;
+      }
+      
+      .menu a:hover {
+        background-color: #f9f9f9;
+        transform: none;
+      }
+      
+      .encabezado {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 15px;
+        text-align: left;
+        position: relative;
+        z-index: 1000;
+      }
+      
+      .encabezado h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      
+      .encabezado p {
+        display: none;
+      }
+      
+      .close-btn {
+        display: block; /* Mostrar solo en móvil */
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 24px;
+        color: #333;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .card {
+        width: 90%;
+        margin: auto;
+      }
+
+      .encabezado h1 {
+        font-size: 16px;
+      }
+    }
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .contacto {
+      margin-bottom: 15px;
+    }
+
+    .contacto h3 {
+      margin-bottom: 10px;
+      font-size: 1.2em;
+    }
+
+    .redes-sociales {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 10px;
+    }
+
+    .social-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .social-icon:hover {
+      transform: scale(1.2);
+    }
+
+    .telefono {
+      margin-top: 10px;
+    }
+
+    .telefono a {
+      color: #4dabf7;
+      text-decoration: none;
+    }
+
+    .telefono a:hover {
+      text-decoration: underline;
+    }
+
+    .copyright {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #444;
+    }
+
+    @media screen and (max-width: 480px) {
+      .redes-sociales {
+        gap: 15px;
+      }
+      
+      .contacto h3 {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ENCABEZADO -->
+  <header class="encabezado">
+    <div class="encabezado-contenido">
+      <h1>🚧 RAW CONSTRU-RENT 🚧</h1>
+      <p>La fuerza que necesitas para construir tu proyecto, con la seguridad y respaldo que mereces.</p>
+    </div>
+    <div class="menu-icon" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
+  </header>
+
+  <!-- MENÚ PRINCIPAL -->
+  <div class="overlay" id="menuOverlay" onclick="closeMenu()"></div>
+  <nav class="menu" id="menuPrincipal">
+    <button class="close-btn" onclick="closeMenu()">
+      <i class="fas fa-times"></i>
+    </button>
+    <a href="index.html">Inicio</a>
+    <a href="catalogo.html">Catálogo</a>
+    <a href="alquiler.html">Alquiler</a>
+    <a href="perfil.html">Perfil</a>
+  </nav>
+
+  <!-- SECCIÓN PRINCIPAL -->
+  <section class="introduccion">
+    <h2>FACILITAMOS TUS PROYECTOS DE CONSTRUCCIÓN</h2>
+    <p>Somos una empresa especializada en el alquiler de maquinaria para construcción con más de 15 años de experiencia en el sector. Ofrecemos una amplia gama de equipos de alta calidad, mantenidos en perfectas condiciones y con servicio técnico incluido. Nuestro objetivo es proporcionar soluciones eficientes para sus proyectos, sean grandes o pequeños, garantizando siempre la máxima seguridad y rendimiento.</p>
+  </section>
+  
+  <section class="galeria">
+    <div class="card">
+      <img src="img/excavadora.jpg" alt="Excavadora" width="100%">
+      <h2>Excavadora</h2>
+    </div>
+    <div class="card">
+      <img src="img/compactadora.jpg" alt="Compactadora" width="100%">
+      <h2>Compactadora</h2>
+    </div>
+    <div class="card">
+      <img src="img/grua.png" alt="Grúa" width="100%">
+      <h2>Grúa</h2>
+    </div>
+  </section>
+
+  <footer>
+    
+      <div class="contacto">
+      <h3>Contáctanos:</h3>
+      <div class="redes-sociales">
+        <a href="https://www.tiktok.com/@renzo.o0?is_from_webapp=1&sender_device=pc" target="_blank" class="social-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/3046/3046126.png" alt="TikTok" width="30">
+        </a>
+        <a href="https://www.facebook.com/wili.leonperez" target="_blank" class="social-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook" width="30">
+        </a>
+        <a href="https://www.instagram.com/27._.willy/" target="_blank" class="social-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="30">
+        </a>
+        <a href="tel:+1234567890" class="social-icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/126/126341.png" alt="Teléfono" width="30">
+        </a>
+      </div>
+      <p class="telefono">Teléfono: <a href="tel:+1234567890">+1 (234) 567-890</a></p>
+    </div>
+    <p class="copyright">© 2025 - Alquiler de maquinaria para construcción</p>
+  </footer>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menuPrincipal');
+      const overlay = document.getElementById('menuOverlay');
+      menu.classList.toggle('active');
+      overlay.classList.toggle('active');
+      document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+    }
+    
+    function closeMenu() {
+      const menu = document.getElementById('menuPrincipal');
+      const overlay = document.getElementById('menuOverlay');
+      menu.classList.remove('active');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  </script>
+
+</body>
+</html>
